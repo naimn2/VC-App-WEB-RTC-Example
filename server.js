@@ -4,7 +4,7 @@ const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const {v4: uuidV4} = require('uuid')
 
-app.set('view engine', 'pug')
+app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
@@ -21,10 +21,10 @@ io.on('connection', socket => {
         console.log(roomId, userId);
         socket.join(roomId)
         socket.to(roomId).broadcast.emit('user-connected', userId)
-    })
 
-    socket.on('disconnect', () => {
-        socket.to(roomId).broadcast.emit('user-disconnected', userId)
+        socket.on('disconnect', () => {
+            socket.to(roomId).broadcast.emit('user-disconnected', userId)
+        })
     })
 })
 
