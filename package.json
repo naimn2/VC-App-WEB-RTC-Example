@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "config": {
+    "protocol": "https",
     "port": 5000
   },
   "scripts": {
