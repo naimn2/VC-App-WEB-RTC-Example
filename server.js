@@ -4,12 +4,14 @@ const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const {v4: uuidV4} = require('uuid')
 
-const PORT = 5000
-
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
+    res.render('index', {title: 'VC WebRTC', welcome: 'Selamat Datang'})
+})
+
+app.get('/start', (req, res) => {
     res.redirect(`/${uuidV4()}`)
 })
 
@@ -30,4 +32,4 @@ io.on('connection', socket => {
     })
 })
 
-server.listen(PORT)
+server.listen(process.env.npm_package_config_port)
