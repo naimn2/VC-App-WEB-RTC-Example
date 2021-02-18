@@ -32,4 +32,4 @@ io.on('connection', socket => {
     })
 })
 
-server.listen(process.env.npm_package_config_port)
+server.listen(process.env.npm_package_config_port || 3000)
