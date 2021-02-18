@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "myserver": "nodemon server.js"
+    "myserver": "nodemon server.js",
+    "start": "node server.js"
   },
   "author": "naim",
   "license": "ISC",
