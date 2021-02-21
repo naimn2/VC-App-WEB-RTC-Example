@@ -4,8 +4,7 @@
   "description": "",
   "main": "server.js",
   "config": {
-    "protocol": "http",
-    "port": 5000
+    "protocol": "http"
   },
   "scripts": {
     "myserver": "nodemon server.js",

@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const server = require(process.env.npm_package_config_protocol).Server(app)
+const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const {v4: uuidV4} = require('uuid')
 
@@ -32,4 +32,4 @@ io.on('connection', socket => {
     })
 })
 
-server.listen(process.env.npm_package_config_port || 3000)
+server.listen(process.env.PORT || 3000)
