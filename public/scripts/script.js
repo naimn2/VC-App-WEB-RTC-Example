@@ -1,6 +1,13 @@
 const socket = io('/')
 const videoGrid = document.getElementById('video-grid')
-const myPeer = new Peer()
+const myPeer = new Peer({
+    config: {
+        'iceServers': [
+            { url: 'stun:stun.l.google.com:19302' },
+            { url: 'stun:stun2.l.google.com:19302' }
+        ]
+    } /* Sample servers, please use appropriate ones */
+})
 // const myPeer = new Peer(undefined, {
 //     secure: true, 
 //     host: 'simple-vc-webrtc.herokuapp.com',
@@ -23,6 +30,15 @@ navigator.mediaDevices.getUserMedia({
             console.log('answer stream')
             addVideoStream(video, userVideoStream)
         })
+        call.on('close', () => {
+            console.log('callee side: call closed');
+            video.remove()
+        })
+        call.on('error', err => {
+            console.log('the call error');
+        })
+        console.log('idCaller: ',call.peer)
+        peers[call.peer] = call
     })
 
     socket.on('user-connected', userId => {
@@ -38,6 +54,14 @@ socket.on('user-disconnected', userId => {
 
 myPeer.on('open', id => {
     socket.emit('join-room', ROOM_ID, id)
+
+    /**
+     * Missing:
+     *    when joining a room as not the first callee (as the 2nd or greater), 
+     *    it doesn't have the callers peer of the other peers those joined 
+     *    before it, so when any call of previous peer closes, its video get frozen. So for the solution, do some iteration for adding 
+     *    every peers in the room
+     */
 })
 
 function connectToNewUser(userId, stream) {
@@ -47,9 +71,9 @@ function connectToNewUser(userId, stream) {
         addVideoStream(video, userVideoStream)
     })
     call.on('close', () => {
+        console.log('caller side: call closed');
         video.remove()
     })
-
     peers[userId] = call
 }
 
@@ -62,7 +86,7 @@ function addVideoStream(video, stream) {
 }
 
 window.addEventListener("beforeunload", function (e) {
-    var confirmationMessage = "Anda yakin ingin meninggalkan meeting?";
+    var confirmationMessage = "\o/";
 
     (e || window.event).returnValue = confirmationMessage; //Gecko + IE
     return confirmationMessage;                            //Webkit, Safari, Chrome
