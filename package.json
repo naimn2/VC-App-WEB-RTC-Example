@@ -7,7 +7,7 @@
     "protocol": "http"
   },
   "scripts": {
-    "myserver": "nodemon server.js",
+    "local": "nodemon server.js",
     "start": "node server.js"
   },
   "author": "naim",
