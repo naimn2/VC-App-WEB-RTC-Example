@@ -1,11 +1,11 @@
 const socket = io('/')
 const videoGrid = document.getElementById('video-grid')
-// const myPeer = new Peer()
-const myPeer = new Peer(undefined, {
-    secure: true, 
-    host: 'simple-vc-webrtc.herokuapp.com',
-    port: 1443,
-})
+const myPeer = new Peer()
+// const myPeer = new Peer(undefined, {
+//     secure: true, 
+//     host: 'simple-vc-webrtc.herokuapp.com',
+//     port: 1443,
+// })
 const myVideo = document.createElement('video')
 myVideo.muted = true
 const peers = {}
@@ -40,8 +40,8 @@ myPeer.on('open', id => {
     socket.emit('join-room', ROOM_ID, id)
 })
 
-function connectToNewUser(userId, stream){
-    const call = myPeer.call(userId, stream) 
+function connectToNewUser(userId, stream) {
+    const call = myPeer.call(userId, stream)
     const video = document.createElement('video')
     call.on('stream', userVideoStream => {
         addVideoStream(video, userVideoStream)
@@ -60,3 +60,10 @@ function addVideoStream(video, stream) {
     })
     videoGrid.append(video)
 }
+
+window.addEventListener("beforeunload", function (e) {
+    var confirmationMessage = "Anda yakin ingin meninggalkan meeting?";
+
+    (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+    return confirmationMessage;                            //Webkit, Safari, Chrome
+});

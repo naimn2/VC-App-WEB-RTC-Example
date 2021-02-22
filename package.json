@@ -8,7 +8,8 @@
   },
   "scripts": {
     "local": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "peerjs": "peerjs --port 1443"
   },
   "author": "naim",
   "license": "ISC",
